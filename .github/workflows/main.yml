@@ -1,0 +1,15 @@
+name: Build
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+jobs:
+  build:
+    # https://github.com/actions/virtual-environments#available-environments
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Hello
+        run: echo Hello
