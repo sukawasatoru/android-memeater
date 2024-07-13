@@ -10,6 +10,53 @@ jobs:
     # https://github.com/actions/virtual-environments#available-environments
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md#environment-variables-2
+      ANDROID_HOME: /usr/local/lib/android/sdk
     steps:
-      - name: Hello
-        run: echo Hello
+      - name: set JAVA_HOME
+        # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md#java
+        run: echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
+      - uses: actions/checkout@v4
+      - name: Setup rust target
+        run: make setup-rust-target
+      - uses: Swatinem/rust-cache@v2
+      - name: Build
+        env:
+          CARGO_TERM_COLOR: always
+        run: |
+          echo '::group::print-vars'
+          make print-vars
+          echo '::endgroup::'
+          make release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: artifacts
+          path: target/**/android-memeater
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+      - name: Test
+        env:
+          CARGO_TERM_COLOR: always
+        run: make test
+  fmt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo fmt --check
+        env:
+          CARGO_TERM_COLOR: always
+  clippy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo clippy
+        env:
+          CARGO_TERM_COLOR: always
