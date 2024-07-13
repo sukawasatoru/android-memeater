@@ -22,7 +22,7 @@ Build
 -----
 
 ```bash
-make setup-ndk
+make setup-ndk setup-rust-target
 
 make release
 ```
