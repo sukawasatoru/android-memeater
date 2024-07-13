@@ -16,7 +16,22 @@ adb shell /data/local/tmp/android-memeater
 
 ### Options ###
 
-refer `android-memeater --help`
+```
+$ ./android-memeater --help
+Usage: android-memeater [OPTIONS]
+
+Options:
+  -i, --interval <INTERVAL>
+          Interval to allocate memory (s|ms) [default: 1s]
+  -s, --score <SCORE>
+          Score for low memory killer [default: 50]
+      --initial-bytes <INITIAL_BYTES>
+          Allocate bytes for initial (GiB|GB|MiB|MB|KiB|KB|B) [default: 100MiB]
+      --interval-bytes <INTERVAL_BYTES>
+          Allocate bytes for every interval (GiB|GB|MiB|MB|KiB|KB|B) [default: 10MiB]
+  -h, --help
+          Print help
+```
 
 Build
 -----
